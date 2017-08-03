@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>LINE Pay Demo</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+$(function(){
+        $('input[name="submit"]').click(function(){
+            // set environment to all form's "environ" input
+            var environType = $('select[name="environ"]').val();
+            $('input[name="environ"]').val(environType);
+            var channelID = $('input[name="CHANNELID"]').val();
+			$('input[name="channelID"]').val(channelID);
+			var channelSecret = $('input[name="CHANNELSECRET"]').val();
+			$('input[name="channelSecret"]').val(channelSecret);
+       });
+});
+</script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+<div class="container">
+    <br>
+    <div class="jumbotron">
+        <img alt="Brand" src="https://trial-tw-pay.line.me/img/lp_logo.png">
+        <br>
+        <br>
+        <p>可依照顯示結果的呼叫方式、呼叫時使用的request header設定以及須提供給各API的各項參數和回傳的訊息內容，作為未來進行串接的參考</p>
+        <p>sample code 可至 https://github.com/lptw-tech/2.1.0 取得</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation" class="active"><a href="#reserve_confirm" aria-controls="reserve_confirm" role="tab" data-toggle="tab">Reserve & Confirm</a></li>
+                <li role="presentation"><a href="#refund" aria-controls="refund" role="tab" data-toggle="tab">Refund</a></li>
+                <li role="presentation"><a href="#check_authorization_detail" aria-controls="check_authorization_detail" role="tab" data-toggle="tab">Check Authorization Detail</a></li>
+                <li role="presentation"><a href="#authorization_capture" aria-controls="authorization_capture" role="tab" data-toggle="tab">Authorization Capture</a></li>
+                <li role="presentation"><a href="#void_authorization" aria-controls="void_authorization" role="tab" data-toggle="tab">Void Authorization</a></li>
+                <li role="presentation"><a href="#check_regKey" aria-controls="check_regKey" role="tab" data-toggle="tab">Check regKey</a></li>
+                <li role="presentation"><a href="#expire_regKey" aria-controls="expire_regKey" role="tab" data-toggle="tab">Expire regKey</a></li>
+                <li role="presentation"><a href="#pre-approved_payment" aria-controls="pre-approved_payment" role="tab" data-toggle="tab">Pre-Approved Payment</a></li>
+                <li role="presentation"><a href="#check_payment_detail" aria-controls="check_payment_detail" role="tab" data-toggle="tab">Check Payment Detail</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-9">
+            <div class="form-group">
+            	<label for="channel">輸入 channelId 和 channelSecret</label>
+            	<div class="input-group">
+            		<span class="input-group-addon">channelId：</span>
+            		<input type="text" class="form-control" name="CHANNELID">
+            	</div>
+            	<br>
+            	<div class="input-group">
+            		<span class="input-group-addon">channelSecret：</span>
+            		<input type="text" class="form-control" name="CHANNELSECRET">
+            	</div>
+            	<br>
+                <label for="sel1">選擇執行環境：(Sandbox / Real)</label>
+                <select class="form-control" name="environ" form="check">
+                    <option value="none">選擇要執行的環境</option>
+                    <option value="sandbox">Sandbox</option>
+                    <option value="real">正式環境 (Real)</option>
+                </select>
+            </div>
+            <br>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="reserve_confirm">
+                    <form class="form-horizontal" role="form" action="Reserve.php" method="POST">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />	
+                        <input name="environ" type="hidden" value="" />				
+                        <h2 class="text-center">交易資訊</h2>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">品項1商品名稱：</span>
+                                    <input type="text" class="form-control" value="TEST 01" name="NAME0">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">品項1價格：</span>
+                                    <input type="text" class="form-control" value="100.00" name="AMT0">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">品項1數量：</span>
+                                    <input type="text" class="form-control" value="1" name="QTY0">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">品項2商品名稱：</span>
+                                    <input type="text" class="form-control" value="TEST 02" name="NAME1">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">品項2價格：</span>
+                                    <input type="text" class="form-control" value="250.00" name="AMT1">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon">品項2數量：</span>
+                                    <input type="text" class="form-control" value="1" name="QTY1">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">運費：</span>
+                            <input type="text" class="form-control" value="10.00" name="shippingAmt">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">商家系統訂單 ID：</span>
+                            <input type="text" class="form-control" name="orderId">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">商品圖示 URL：</span>
+                            <input type="text" class="form-control" name="logo" value="https://trial-tw-pay.line.me/img/images.jpeg">
+                        </div>
+                        <h2 class="text-center">進階設定</h2>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <h4 class="text-center">Confirm URL 形式</h4>
+                                <div class="text-center">
+                                    <label class="radio-inline" for="inputlg"><input name="confirmUrlType" type="radio" value="CLIENT" checked>Client</label>
+                                    <label class="radio-inline"><input name="confirmUrlType" type="radio" value="SERVER">Server</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <h4 class="text-center">確認瀏覽器是否相同</h4>
+                                <div class="text-center">
+                                    <label class="radio-inline"><input name="checkConfirmUrlBrowser" type="radio" value="true">Yes</label>
+                                    <label class="radio-inline"><input name="checkConfirmUrlBrowser" type="radio" value="false" checked>No</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <h4 class="text-center">付款類型</h4>
+                                <div class="text-center">
+                                    <label class="radio-inline"><input name="payType" type="radio" value="NORMAL" checked>Normal</label>
+                                    <label class="radio-inline"><input name="payType" type="radio" value="PREAPPROVED">Pre-Approved</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <h4 class="text-center">指定是否請款</h4>
+                                <div class="text-center">
+                                    <label class="radio-inline"><input name="capture" type="radio" value="true" checked>Yes</label> 
+                                    <label class="radio-inline"><input name="capture" type="radio" value="false">No</label> 
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="text-right">
+                           <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" >
+                        </div>
+                    </form>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="refund">
+                    <form action="Refund.php" method="POST">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />
+                        <input name="environ" type="hidden" value="" />
+                        <h2 class="text-center">退款</h2>
+                        <div class="input-group">
+                            <span class="input-group-addon">交易編號 (transactionId)：</span>
+                            <input type="text" class="form-control" name="refTxnId">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">退款金額 (如未指定金額，則全額退款)：</span>
+                            <input type="text" class="form-control" name="refundAmount">
+                        </div>
+                        <br>
+                        <div class="text-right">
+                            <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" />
+                        </div>
+                    </form>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="check_authorization_detail">
+                    <form action="GetAuthDetail.php" method="POST" id="check">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />
+                        <input name="environ" type="hidden" value="" />
+                        <h2 class="text-center">查看授權記錄</h2>
+                        <p>以交易編號或商家訂單編號進行查詢 (兩者擇一)</p> 
+                        <div class="input-group">
+                            <span class="input-group-addon">交易編號 (transactionId)：</span>
+                            <input type="text" class="form-control" name="gadTranId">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">商家訂單編號 (orderId)：</span>
+                            <input type="text" class="form-control" name="gadOrderId">
+                        </div>
+                        <br>
+                        <p>※授權紀錄只包含已授權未請款及授權作廢的資料，已請款項目請查看付款紀錄</p>
+                        <br>
+                        <div class="text-right">
+                            <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" />
+                        </div>
+                    </form>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="authorization_capture">
+                    <form action="Capture.php" method="POST">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />
+                        <input name="environ" type="hidden" value="" />
+                        <h2 class="text-center">授權請款</h2>
+                        <div class="input-group">
+                            <span class="input-group-addon">交易編號 (transactionId)：</span>
+                            <input type="text" class="form-control" name="cTxnId">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">請款金額(如未全額請款，剩餘金額將自動退款)：</span>
+                            <input type="text" class="form-control" name="captureAmount">
+                        </div>
+                        <br>
+                        <div class="text-right">
+                            <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" />
+                        </div>
+                    </form>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="void_authorization">
+                    <form action="VoidAuthorization.php" method="POST">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />	
+                        <input name="environ" type="hidden" value="" />
+                        <h2 class="text-center">授權作廢</h2>
+                        <div class="input-group">
+                            <span class="input-group-addon">交易編號 (transactionId)：</span>
+                            <input type="text" class="form-control" name="vaTxnId">
+                        </div>
+                        <br>
+                        <div class="text-right">
+                            <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" />
+                        </div>
+                    </form>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="check_regKey">
+                    <form action="CheckRegKey.php" method="POST">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />
+                        <input name="environ" type="hidden" value="" />
+                        <h2 class="text-center">查看 regKey 狀態</h2>
+                        <div class="input-group">
+                            <span class="input-group-addon">輸入 regKey：</span>
+                            <input type="text" class="form-control" name="regKey">
+                        </div>
+                        <h4 class="text-center">確認買家信用卡之最少金額</h4>
+                        <div class="text-center">
+                            <label class="radio-inline"><input name="ccAuth" type="radio" value="true" checked>Yes</label> 
+                            <label class="radio-inline"><input name="ccAuth" type="radio" value="false">No</label> 
+                        </div>
+                        <br>
+                        <div class="text-right">
+                            <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" />
+                        </div>
+                    </form>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="expire_regKey">
+                    <form action="ExpireRegKey.php" method="POST">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />
+                        <input name="environ" type="hidden" value="" />
+                        <h2 class="text-center">註銷 regKey</h2>
+                        <div class="input-group">
+                            <span class="input-group-addon">輸入 regKey：</span>
+                            <input type="text" class="form-control" name="regKey">
+                        </div>
+                        <br>
+                        <div class="text-right">
+                            <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" />
+                        </div>
+                    </form>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="pre-approved_payment">
+                    <form action="PreapprovedPayment.php" method="POST">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />
+                        <input name="environ" type="hidden" value="" />
+                        <h2 class="text-center">執行自動付款</h2>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">輸入 regKey：</span>
+                                    <input type="text" class="form-control" name="regKey">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">商家系統訂單編號 (orderId)：</span>
+                                    <input type="text" class="form-control" name="pOrderId">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">產品名稱：</span>
+                                    <input type="text" class="form-control" name="pNAME" value="TEST 01">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">價格：</span>
+                                    <input type="text" class="form-control" name="pAMT" value="100.00">
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="text-center">指定是否請款</h4>
+                        <div class="text-center">
+                            <label class="radio-inline"><input name="pCapture" type="radio" value="true" checked>Yes</label> 
+                            <label class="radio-inline"><input name="pCapture" type="radio" value="false">No</label> 
+                            <br>
+                            <div class="text-right">
+                                <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="check_payment_detail">
+                    <form action="GetPaymentDetail.php" method="POST" id="check">
+                    	<input name="channelID" type="hidden" value="" />
+                    	<input name="channelSecret" type="hidden" value="" />
+                        <input name="environ" type="hidden" value="" />
+                        <h2 class="text-center">查看交易記錄</h2>
+                        <p>以交易編號或商家訂單編號進行查詢 (兩者擇一)</p> 
+                        <div class="input-group">
+                            <span class="input-group-addon">交易編號 (transactionId)：</span>
+                            <input type="text" class="form-control" name="gpdTranId">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <span class="input-group-addon">商家訂單編號 (orderId)：</span>
+                            <input type="text" class="form-control" name="gpdOrderId">
+                        </div>
+                        <br>
+                        <div class="text-right">
+                            <input type="image" name="submit" src="https://trial-tw-pay.line.me/img/LINE Pay_image.jpg" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.container-fluid -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+</body>
+</html>
